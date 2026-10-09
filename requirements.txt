@@ -1,0 +1,13 @@
+python-dotenv
+openai
+streamlit
+langchain-core
+langchain-community
+langchain-openai
+langgraph
+fastapi
+uvicorn
+langsmith
+pypdf
+pandas
+numpy

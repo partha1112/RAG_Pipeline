@@ -1,0 +1,36 @@
+[
+  {
+    "document": "USA_Employee_Handbook-Freely_Available.pdf",
+    "golden_dataset": [
+      {
+        "question": "If two employees refer the same candidate, who receives the referral incentive?",
+        "ground_truth": "Only the first referrer receives the referral incentive."
+      },
+      {
+        "question": "What steps may the hiring team follow when filling an open role?",
+        "ground_truth": "The process includes identifying the need, deciding whether to hire internally or externally, preparing and approving the job description and advertisement, choosing posting sources and hiring stages, reviewing and sourcing candidates, shortlisting, interviewing, checking backgrounds and references, selecting a candidate, and making an offer. Steps may overlap or be skipped when appropriate."
+      },
+      {
+        "question": "What are the six steps in the handbook's progressive discipline process?",
+        "ground_truth": "The steps are a verbal warning, an informal meeting with a supervisor, a formal reprimand, a formal disciplinary meeting, penalties, and termination. Managers may skip or repeat steps at their discretion."
+      }
+    ]
+  },
+  {
+    "document": "humanresourcespolicy.pdf",
+    "golden_dataset": [
+      {
+        "question": "What happens if Nestlé's HR policy conflicts with local legislation?",
+        "ground_truth": "Should any HR policy conflict with local legislation, local legislation will prevail."
+      },
+      {
+        "question": "Who makes the decision to hire a candidate at Nestlé?",
+        "ground_truth": "The responsible manager makes the hiring decision, supported by HR staff."
+      },
+      {
+        "question": "At which levels are Nestlé's industrial relations handled?",
+        "ground_truth": "Local management is responsible for industrial relations. They are handled first at site level, then at regional or national level according to local law and practices."
+      }
+    ]
+  }
+]
