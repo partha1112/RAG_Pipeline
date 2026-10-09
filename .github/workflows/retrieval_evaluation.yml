@@ -34,5 +34,6 @@ jobs:
         continue-on-error: true
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          PINECONE_API_KEY: ${{ secrets.PINECONE_API_KEY }}
         run: |
           uv run python -m pytest src/evaluation/evaluate_retrieval.py -v -s --junitxml=pytest-results.xml
