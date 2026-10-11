@@ -1,1 +1,5 @@
 .env
+src/utils/__pycache__/exceptions.cpython-312.pyc
+src/service/__pycache__/rag_pipeline.cpython-312.pyc
+src/guardrails/__pycache__/validator.cpython-312.pyc
+src/__pycache__/api.cpython-312.pyc

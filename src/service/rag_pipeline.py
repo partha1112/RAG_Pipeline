@@ -1,9 +1,11 @@
 from langchain_core.messages import HumanMessage
 from langchain_core.messages import SystemMessage
+from src.utils.exceptions import PoorRetrievalQualityException
 from src.service.input_processor import rewrite_input
 from src.service.vectorstore import get_documents_without_metadata
 from src.llm import llm
-from src.guardrails.validator import validate_input
+from src.guardrails.validator import vaidate_output, validate_input
+
 
 def process_input(input_query : str):
     validation_result = validate_input(input_query)
@@ -13,6 +15,11 @@ def process_input(input_query : str):
     rewritten_input = rewrite_input(input_query)
     documents = get_documents_without_metadata(rewritten_input)
 
+    score = documents[0][1]
+
+    if score < 1.5 :
+        raise PoorRetrievalQualityException()
+    
     prompt_doc = documents[0][0].page_content
 
     PROMPT_TEMPLATE = f"""You are an accurate and helpful HR Assistant. Your role is to answer employee questions using ONLY the official HR documentation provided below.
@@ -29,6 +36,10 @@ def process_input(input_query : str):
     print(prompt_doc)
     messages = [SystemMessage(content=PROMPT_TEMPLATE), HumanMessage(content=input_query)]
     response = llm.invoke(messages)
+
+    val_res = vaidate_output(response.content, prompt_doc, rewritten_input)
+
+    print(val_res)
     return response.content
 
     
