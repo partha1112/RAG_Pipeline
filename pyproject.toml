@@ -5,16 +5,19 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "aiobreaker>=1.2.0",
     "datasets>=5.1.0",
     "fastapi>=0.142.4",
     "guardrail-ai>=0.1.8",
     "guardrails-ai>=0.11.0",
+    "httpx>=0.28.1",
     "langchain-community==0.3.31",
     "langchain-core>=1.6.7",
     "langchain-openai>=1.6.7",
     "langchain-pinecone>=0.1.0",
     "pinecone>=6.0.0,<8.0.0",
     "pinecone-text>=0.11.0",
+    "pybreaker>=1.4.1",
     "pytest>=9.1.1",
     "ragas>=0.4.3",
     "sentence-transformers>=6.1.0",

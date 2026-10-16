@@ -20,7 +20,7 @@ from transformers import AutoModelForSequenceClassification, AutoTokenizer, pipe
 
 
 from src.llm import llm
-from src.utils.scope import ScopeModel
+from src.utils.schema import ScopeModel
 
 
 MODEL_CACHE_DIR = r"C:\Users\Dell\AI_projects\Multi Agent Chat bot\deberta-prompt-injection"

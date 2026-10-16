@@ -1,13 +1,23 @@
 from langchain_core.messages import HumanMessage
 from langchain_core.messages import SystemMessage
+from src.service.ustream_services import fetch_user_data_with_retry
 from src.utils.exceptions import PoorRetrievalQualityException
 from src.service.input_processor import rewrite_input
 from src.service.vectorstore import get_documents_without_metadata
 from src.llm import llm
 from src.guardrails.validator import vaidate_output, validate_input
+from src.utils.schema import UserInput
+import asyncio
 
 
-def process_input(input_query : str):
+def process_input(userInput : UserInput):
+
+    user_info = asyncio.run(fetch_user_data_with_retry(userInput.user_id))
+
+    if user_info:
+        return user_info
+    
+    input_query = userInput.message
     validation_result = validate_input(input_query)
     if not validation_result["is_valid"]:
         return f"Your question is {validation_result['status']}. Please rephrase your question and try again."
