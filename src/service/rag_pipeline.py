@@ -12,10 +12,10 @@ import asyncio
 
 def process_input(userInput : UserInput):
 
-    # user_info = asyncio.run(fetch_user_data_with_retry(userInput.user_id))
+    user_info = asyncio.run(fetch_user_data_with_retry(userInput.user_id))
 
-    # if user_info:
-    #     return user_info
+    if user_info:
+        return user_info
     
     input_query = userInput.message
     validation_result = validate_input(input_query)
