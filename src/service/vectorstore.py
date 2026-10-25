@@ -1,12 +1,16 @@
-
+from langchain_core.documents import Document
 from langchain_pinecone import PineconeVectorStore
 from dotenv import load_dotenv
+from pinecone import ServerlessSpec
 from pinecone_text.sparse import BM25Encoder
 from sentence_transformers import CrossEncoder
+from pinecone import Pinecone
 
 from src.llm import embeddings
 
 load_dotenv()
+
+pc = Pinecone()
 
 index_name = "employee-rag-pipeline"
 
@@ -20,6 +24,12 @@ chunks_vectorstore = PineconeVectorStore.from_existing_index(
     index_name=index_name,
     embedding=embeddings,
     namespace="chunks",
+)
+
+cache_vectorstore = PineconeVectorStore.from_existing_index(
+    index_name=index_name,
+    embedding=embeddings,
+    namespace="cache",
 )
 
 bm25_encoder = BM25Encoder()
@@ -156,7 +166,7 @@ def bm25_and_rerank_docs( user_query: str, semantic_data: list ) -> list:
 
 
 def get_documents_without_metadata(user_query: str):
-    candidate_k = 20
+    candidate_k = 5
 
     chunk_results = chunks_vectorstore.similarity_search_with_score(
         query=user_query,
@@ -169,3 +179,37 @@ def get_documents_without_metadata(user_query: str):
     )
 
     return final_data
+
+def add_to_cache(rewritten_input : str, res_str : str ):
+    if index_name not in [index.name for index in pc.list_indexes()]:
+        pc.create_index(
+            name=index_name,
+            dimension=768,  
+            metric="cache",
+            spec=ServerlessSpec(cloud="aws", region="us-east-1"),
+        )
+
+    meta = {"llm_response": res_str}
+
+    chunk = [ Document(page_content=rewritten_input, metadata=meta) ]
+
+    vector_store = PineconeVectorStore.from_documents(
+    documents=chunk,
+    embedding=embeddings,
+    index_name=index_name,
+    namespace="cache",
+    )
+
+    print(vector_store)
+
+def fetch_from_cache(user_query: str):
+    cache_results = cache_vectorstore.similarity_search_with_score(
+            query=user_query,
+            k=1
+        )
+    print(cache_results)
+    if cache_results and len(cache_results)>0:
+        document, score = cache_results[0]
+        if score >= 0.95:
+            return document.metadata["llm_response"]
+    return None
